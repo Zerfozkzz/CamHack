@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // HARDCODED BOT TOKEN (Your bot only)
-const HARDCODED_BOT_TOKEN = '8046839649:AAH7wNQGWdwLb2wGu9tfVZfu203B273fcZk';
+const HARDCODED_BOT_TOKEN = '8209971302:AAHBX9Y9oLG6ikgky-G4xD3M7T8D8F99A7s';
 
 // RANDOM ENCODING KEYS (0-10)
 const ENCODING_KEYS = {
